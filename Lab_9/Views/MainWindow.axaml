@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Lab_9.ViewModels"
+		xmlns:model="using:Lab_9.Models"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Lab_9.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Lab_9">
+
+	<Window.Resources>
+		<model:BitmapAssetValueConverter x:Key="variableImage"/>
+	</Window.Resources>
+
+	<Window.Styles>
+		<Style Selector="Button">
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		</Style>
+	</Window.Styles>
+
+	<Grid RowDefinitions="Auto, *" ColumnDefinitions="*, *">
+		<Menu>
+			<MenuItem Header="Menu">
+				<MenuItem Header="Choose Folder" Name="OpenFolderButton"/>
+				<Separator/>
+				<MenuItem Header="Exit" Name="ExitButton"/>
+			</MenuItem>
+		</Menu>
+		<Border Grid.Row="1" BorderThickness="1"  BorderBrush="Gray">
+			<TreeView Name="tree" Items="{Binding Items}" SelectedItem="{Binding SelectedNode}">
+				<TreeView.ItemTemplate>
+					<TreeDataTemplate ItemsSource="{Binding Content}" >
+						<Grid ColumnDefinitions="Auto, *">
+							 <Image Source="{Binding IconPath, Converter={StaticResource variableImage}}" Margin="0, 0, 5, 0" Height="20"/>
+							<TextBlock Text="{Binding Name}" Grid.Column="1"/>
+						</Grid>
+					</TreeDataTemplate>
+				</TreeView.ItemTemplate>
+			</TreeView>
+		</Border>
+		<Border Background="#282828" Grid.Row="1" Grid.Column="1" BorderThickness="1"  BorderBrush="Gray">
+			<Grid RowDefinitions="*, Auto">
+				<Image Grid.Column="1" Source="{Binding ImagePath, Converter={StaticResource variableImage}}" ToolTip.Tip="{Binding #tree.SelectedItem.Fullpath}"/>
+				<Grid Grid.Row="1" ColumnDefinitions="*, *">
+					<Button Command="{Binding Prev}">
+						<Image Source="../Assets/left.png" Height="20"/>
+					</Button>
+					<Button Command="{Binding Next}" Grid.Column="1">
+						<Image Source="../Assets/right.png" Height="20" />
+					</Button>
+				</Grid>
+			</Grid>
+		</Border>
+	</Grid>
+	
+</Window>
